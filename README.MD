@@ -1,22 +1,22 @@
 #说明
 
 
-##1、启动yog2 
+### 1、启动yog2
 ```
 cd yog/
 yog2 run
 ```
 
 
-##2、启动ssp
+### 2、启动flow
 ```
 cd ssp/
 yog2 release debug -wld --fis3
 ```
 
-##3.目录结构
+### 3.目录结构
 
-###yo2目录
+### yo2目录
 
 ```
 ├─yog
@@ -34,7 +34,7 @@ yog2 release debug -wld --fis3
     └─app.js              # project 启动入口
 ```
 
-###ssp目录结构
+### ssp目录结构
 
 ```
 ├─client                 # 前端代码
@@ -59,7 +59,7 @@ yog2 release debug -wld --fis3
 ```
 
 
-###注意
+### 注意
 
 启动app过程中可能会遇到一些模块依赖问题，可以用一下配置文件pack.json > devDependencies
 ```
