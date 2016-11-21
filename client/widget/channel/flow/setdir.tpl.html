@@ -1,0 +1,9 @@
+<p style="padding: 5px;">
+  <a
+  	type="button"
+  	class="btn btn-info btn-sm"
+  	ng-click="grid.appScope.units.PoPsetDir(row.entity)"
+  	ng-if="row.entity.has_catalogs"
+  	>目录设置</a>
+  <span ng-if="!row.entity.has_catalogs">暂无</span>
+</p>

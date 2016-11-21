@@ -1,0 +1,137 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+  	流量控制
+  </div>
+  <div class="panel-body">
+  	<form name="flowForm"
+		  class="form-horizontal form-validate">
+  		<!-- 渠道名称 -->
+	  	<div class="form-group">
+	  		<label for="cname" class="col-sm-2 control-label">渠道名称</label>
+	  		<div class="col-sm-10">
+	  			<input type="text" class="form-control" ng-model="form.flow.cname" id="cname" readonly>
+	    	</div>
+	  	</div>
+	  	
+	  	<!-- 渠道类型 -->
+	  	<div class="form-group">
+	  		<label for="ctype" class="col-sm-2 control-label">渠道类型</label>
+	  		<div class="col-sm-10">
+	  			<input
+	  				type="text"
+	  				class="form-control"
+	  				ng-value="units.adapterCtype(form.flow.ctype)"
+	  				id="ctype" 
+	  				readonly>
+	    	</div>
+	  	</div>
+
+	  	<!-- 采购方式 -->
+	  	<div class="form-group">
+	  		<label for="purchase_mode" class="col-sm-2 control-label">采购方式</label>
+	  		<div class="col-sm-10">
+	  			<input
+	  				type="text"
+	  				class="form-control"
+	  				id="purchase_mode"
+	  				ng-value="units.adapterPurchase_mode(form.flow.purchase_mode)" readonly>
+	    	</div>
+	  	</div>
+
+	  	<!-- 产品线 -->
+	  	<div class="form-group required">
+	  		<label for="productsAll" class="col-sm-2 control-label">产品线</label>
+	  		<div class="col-sm-10">
+	  			<label
+	  				class="checkbox-inline"
+	  				ng-repeat="obj in initData.productsAll track by $index">
+                  <input
+						  type="checkbox"
+                        checklist-value="obj.value"
+                        checklist-model="form.extra.productValue"
+	              		id="productsAll"
+                        >
+                        {{obj.type}}
+                </label>
+	    	</div>
+	  	</div>
+
+	  	<!-- 平台 -->
+	  	<div class="form-group required">
+	  		<label for="platformsALL" class="col-sm-2 control-label">平台</label>
+	  		<div class="col-sm-10">
+				<label class="checkbox-inline" ng-repeat="obj in initData.platformsALL track by $index">
+                  <input type="checkbox"
+                        checklist-value="obj.value"
+						 id="platformsALL"
+                        checklist-model="form.extra.platformValue">{{obj.type}}
+                </label>
+	    	</div>
+	  	</div>
+
+	  	<div class="form-group required">
+	  		<label for="max_qps" class="col-sm-2 control-label">最大QPS</label>
+	  		<div class="col-sm-3" ng-if="form.flow.max_qps != -1">
+	  			<div class="input-group">
+			      <input
+			      	class="form-control col-sm-2"
+					name="max_qps"
+					id="max_qps"
+			      	ng-model="form.flow.max_qps"
+				  	ng-pattern="/^\+?[1-9][0-9]*$/"
+				  	required>
+			      <div class="input-group-addon">次/秒</div>
+			    </div>
+				<ng-messages
+						style="display: block;"
+						class="text-danger"
+						for="(!flowForm.max_qps.$pristine || flowForm.$submitted) && flowForm.max_qps.$error">
+					<ng-message when="required">此处不能为空</ng-message>
+					<ng-message when="pattern">必须为大于0的正整数</ng-message>
+				</ng-messages>
+	    	</div>
+	    	<div class="col-sm-3">
+	    		<label class="checkbox-inline">
+				  <input type="checkbox" name="max_qps" ng-model="form.flow.max_qps" ng-change="units.checkQps(form.flow.max_qps)" ng-checked="form.flow.max_qps == '-1'" ng-true-value="'-1'" ng-click="form.setQPS(form.flow.max_qps)"> 不限
+				</label>
+	    	</div>
+	  	</div>
+
+	  	<div class="form-group" ng-if="form.flow.purchase_mode === '2'">
+	  		<label for="allCpmLowPrice" class="col-sm-2 control-label">批量设置CPM价格</label>
+	  		<div class="col-sm-3">
+	  			 <button
+	  			 	ng-disabled="!form.extra.flag"
+	  			 	type="button" 
+	  			 	class="btn btn-sm btn-info"
+	  			 	ng-click="units.PoPbatchSetPrice()">
+	  			 	设置
+	  			 </button>
+	    	</div>
+	  	</div>
+
+	  	<!-- 表格 -->
+        <div
+                ui-grid="gridOptions"
+                ng-style="units.getTableStyle()"
+                ui-grid-resize-columns
+                ui-grid-auto-resize
+                ui-grid-pagination
+                ui-grid-save-state
+                class="table-uigrid mt20">
+        </div>
+  	</form>
+  </div>
+
+  <!-- Table -->
+  <table class="table">
+	  <!-- ng-disabled="!flowForm.$valid || flowForm.$pristine" -->
+    <div class="col-md-offset-2 mt20" style="text-align: center;">
+	        <button type="submit"
+	        	class="btn btn-info" ng-click="flowForm.$valid && form.submit()">
+	        	提交
+	        </button>
+	        <button type="button" class="btn btn-info" ng-click="form.turnBack()">取消</button>
+	     </div>
+  </table>
+</div>

@@ -1,0 +1,30 @@
+<nav class="navigation">
+    <ul class="list-unstyled">
+        <li
+            ui-sref-active="active"
+            ng-repeat="(parKey, item) in sideNavConfig"
+            ng-class="{'has-submenu': item.subNav.length, 'active': item.selected}"
+            ng-click="parNav(parKey)" par-nav>
+            <a
+                ui-sref="{{item.url}}"
+                ng-if="item.url"
+                ui-sref-opts="{reload: true}">
+                <i class="{{item.className}}"></i> <span class="nav-label">{{item.name}}</span>
+            </a>
+            <a
+                ng-if="!item.url"
+                ui-sref-opts="{reload: true}">
+                <i class="{{item.className}}"></i> <span class="nav-label">{{item.name}}</span>
+            </a>
+            <ul
+                ng-if="item.subNav.length"
+                class="list-unstyled">
+                <li ng-repeat="subUrlItem in item.subNav">
+                    <a
+                        ui-sref-opts="{reload: true}"
+                        ui-sref="{{subUrlItem.url}}">{{subUrlItem.name}}</a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</nav>

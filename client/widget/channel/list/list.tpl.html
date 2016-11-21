@@ -1,0 +1,54 @@
+ <div class="panel panel-default">
+  <!-- Default panel contents -->
+  <div class="panel-heading">
+  	<form class="form-inline" role="form">
+	  <div class="form-group">
+      	<div class="uiselect-200">
+      		<ui-select ng-model="form.params.status" ng-change="form.submit()">
+			    <ui-select-match placeholder="请选择状态">{{$select.selected.des}}</ui-select-match>
+			    <ui-select-choices repeat="obj.status as obj in initData.statusList | filter: $select.search">
+			        <div ng-bind-html="obj.des | highlight: $select.search"></div>
+			    </ui-select-choices>
+			</ui-select>
+      	</div>
+	  </div>
+	  <div class="form-group">
+	    <div class="input-group">
+	      <div class="input-group-addon">渠道名称</div>
+	      <input class="form-control" ng-model="form.params.cname" type="text" placeholder="渠道名称">
+	    </div>
+	  </div>
+	  <button type="submit" class="btn btn-info" ng-click="form.submit()">查询</button>
+	</form>
+  </div>
+  <div class="panel-body">
+  		<button type="button" class="btn btn-info glyphicon glyphicon-plus" ui-sref="channel.create">新建渠道</button>
+  		<button
+  			type="button" 
+  			class="btn btn-info glyphicon glyphicon-play"
+  			ng-click="units.changeStatus(1)"
+  			ng-disabled="form.params.status == 1 || !gridApi.selection.getSelectedRows().length">启用</button>
+        <!-- !gridApi.selection.getSelectedRows().length -->
+		<button
+			type="button" 
+			ng-click="units.changeStatus(2)"
+			class="btn btn-info glyphicon glyphicon-pause"
+			ng-disabled="form.params.status == 2 || !gridApi.selection.getSelectedRows().length">冻结</button>
+      <!-- !gridApi.selection.getSelectedRows().length -->
+  </div>
+
+  <!-- Table -->
+  <table class="table">
+  	 <div
+        ng-style="units.getTableStyle()"
+  		  ui-grid-resize-columns
+        ui-grid-auto-resize
+        ui-grid-selection
+        ui-grid-pagination
+        ui-grid-save-state
+        ui-grid-empty-base-layer
+  		  ui-grid="gridOptions" 
+  		  class="table-uigrid mt20">
+        </div>
+  </table>
+</div>

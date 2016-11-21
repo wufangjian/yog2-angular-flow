@@ -1,0 +1,34 @@
+<ng-form novalidate name="ctrForm" style="padding: 5px;">
+        <label class="radio-inline">
+            <input
+                    type="radio"
+                    name="flow{{row.entity.place_id}}"
+                    ng-checked="row.entity.qps_control == 1"
+                    ng-click="grid.appScope.units.setFlow(row.entity, 1)"
+                    value="row.entity.qps_control"> 不限
+        </label>
+
+        <label class="radio-inline" style="margin-left: 0;">
+            <input
+                    type="radio"
+                    name="flow{{row.entity.place_id}}"
+                    ng-checked="row.entity.qps_control == 2"
+                    ng-click="grid.appScope.units.setFlow(row.entity, 2)"
+                    value="row.entity.qps_control"> 百分比
+        </label>
+
+        <div class="input-group" style="margin: 5px; width:100px;" ng-if="row.entity.qps_control == 2">
+            <input class="form-control"
+                   ng-model="row.entity.qps_percent"
+                   name="qps_percent"
+                   ng-pattern="/^[0-9][0-9]?(\.[0-9]{1,2})?$|^100$/"
+                   ng-blur="grid.appScope.units.setQps_percent(row.entity, row.entity.qps_percent)"
+                   required
+                   style="padding: 3px; z-index: 1">
+            <div class="input-group-addon">%</div>
+        </div>
+        <ng-messages class="text-danger" for="ctrForm.qps_percent.$error" style="font-size: 12px;padding: 3px;">
+            <ng-message when="required">此处不能为空</ng-message>
+            <ng-message when="pattern"> <= 100的正数保留两位小数</ng-message>
+        </ng-messages>
+</ng-form>

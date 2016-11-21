@@ -1,0 +1,246 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <span ng-if="initData.operaType == 'create'" ng-bind="'新建渠道信息'"></span>
+     <span ng-if="initData.operaType == 'edit'" ng-bind="'编辑渠道信息'"></span>
+  </div>
+
+  <div class="panel-body">
+    <form name="ChannelForm"
+          ng-submit="ChannelForm.$valid && form.submit()"
+          class="form-validate form-horizontal"
+          ng-autodisable
+          novalidate
+          >
+      <!--渠道名称-->
+      <div class="form-group required">
+        <label for="cname" class="col-sm-2 control-label">渠道名称</label>
+        <div class="col-sm-10">
+          <input
+              name="cname"
+              type="text"
+              class="form-control"
+              ng-model="form.channel.cname"
+              ng-maxlength="100"
+              ui-validate-async="form.extra.checkuname? {} : {
+                channelName: 'validate.channelName($value)',
+              }"
+              id="cname"
+              required>
+          <ng-messages
+            class="text-danger"
+            for="(!ChannelForm.cname.$pristine || ChannelForm.$submitted) && ChannelForm.cname.$error">
+              <ng-message when="maxlength">最多支持100个字</ng-message>
+              <ng-message when="required">此处不能为空</ng-message>
+              <ng-message when="channelName">该渠道名称已被占用</ng-message>
+          </ng-messages>
+        </div>
+      </div>
+
+      <!--渠道类型-->
+      <div class="form-group required">
+        <label for="ctype" class="col-sm-2 control-label">渠道类型</label>
+        <div class="col-sm-10">
+          <ui-select
+            name="ctype"
+            id="ctype"
+            ng-model="form.channel.ctype"
+            ui-validate="form.channel.ctype"
+            required>
+            <ui-select-match placeholder="请选择渠道类型">{{$select.selected.des}}</ui-select-match>
+            <ui-select-choices repeat="obj.ctype as obj in initData.channelTypeList | filter: $select.search">
+                <div ng-bind-html="obj.des | highlight: $select.search"></div>
+            </ui-select-choices>
+          </ui-select>
+
+          <ng-messages
+            class="text-danger"
+            for="(!ChannelForm.ctype.$pristine || ChannelForm.$submitted) && ChannelForm.ctype.$error">
+              <ng-message when="required">此处不能为空</ng-message>
+          </ng-messages>
+        </div>
+      </div>
+
+      <!--采购方式-->
+      <div class="form-group required">
+        <label for="purchase_mode" class="col-sm-2 control-label">采购方式</label>
+        <div class="col-sm-10">
+          <ui-select
+              name="purchase_mode"
+              ng-model="form.channel.purchase_mode"
+              id="purchase_mode"
+              ui-validate-async="initData.operaType === 'create'? {} : {
+                channelPurchase_mode: 'validate.channelPurchase_mode($value)'
+              }"
+              required>
+            <ui-select-match placeholder="请选择采购方式">{{$select.selected.des}}</ui-select-match>
+            <ui-select-choices repeat="obj.purchase_mode as obj in initData.purchaseModeList | filter: $select.search">
+                <div ng-bind-html="obj.des | highlight: $select.search"></div>
+            </ui-select-choices>
+          </ui-select>
+
+          <ng-messages
+            class="text-danger"
+            for="(!ChannelForm.purchase_mode.$pristine || ChannelForm.$submitted) && ChannelForm.purchase_mode.$error">
+              <ng-message when="required">此处不能为空</ng-message>
+              <ng-message when="channelPurchase_mode">请先关闭该渠道下的全部广告位，再修改采购方式为固定CPM</ng-message>
+          </ng-messages>
+          <!--ng-disabled="form.channel.canRtbToCpm && initData.operaType === 'edit'"-->
+          <!--<span ng-if="form.channel.canRtbToCpm && initData.operaType === 'edit'">-->
+            <!--请先关闭该渠道下的全部广告位，再修改采购方式为固定CPM-->
+          <!--</span>-->
+        </div>
+      </div>
+
+      <!--广告请求地址-->
+      <div class="form-group required">
+        <label for="ad_req_url" class="col-sm-2 control-label">广告请求地址</label>
+        <div class="col-sm-10">
+          <input
+            type="text"
+            name="ad_req_url"
+            class="form-control"
+            ng-model="form.channel.ad_req_url"
+            ng-maxlength="1024"
+            id="ad_req_url"
+            required>
+          <ng-messages
+            class="text-danger"
+            for="(!ChannelForm.ad_req_url.$pristine || ChannelForm.$submitted) && ChannelForm.ad_req_url.$error">
+              <ng-message when="required">此处不能为空</ng-message>
+              <ng-message when="maxlength">地址不能超过1024个字节</ng-message>
+          </ng-messages>
+        </div>
+      </div>
+
+
+      <div class="form-group">
+        <label for="ad_callback_url" class="col-sm-2 control-label">竞标获胜通知地址</label>
+        <div class="col-sm-10">
+          <input
+            type="text"
+            class="form-control"
+            ng-model="form.channel.ad_callback_url"
+            id="ad_callback_url"
+            ng-maxlength="1024"
+            name="ad_callback_url">
+          <ng-messages
+            class="text-danger"
+            for="(!ChannelForm.ad_callback_url.$pristine || ChannelForm.$submitted) && ChannelForm.ad_callback_url.$error">
+              <ng-message when="maxlength">地址不能超过1024个字节</ng-message>
+          </ng-messages>
+        </div>
+      </div>
+
+      <div class="form-group required">
+        <label for="month_deposit" class="col-sm-2 control-label">月保证金</label>
+        <div class="col-sm-3"  ng-if="form.channel.month_deposit != -1">
+          <div class="input-group">
+            <input
+              class="form-control"
+              type="number"
+              ng-model="form.channel.month_deposit"
+              name="month_deposit"
+              id="month_deposit"
+              ng-pattern="/^\+?[1-9][0-9]*$/"
+              required>
+            <div class="input-group-addon">元</div>
+          </div>
+          <ng-messages
+            class="text-danger"
+            for="(!ChannelForm.month_deposit.$pristine || ChannelForm.$submitted) && ChannelForm.month_deposit.$error">
+              <ng-message when="required">此处不能为空</ng-message>
+              <ng-message when="pattern">请输入大于0的正整数</ng-message>
+          </ng-messages>
+        </div>
+        <div class="col-sm-3">
+          <label class="checkbox-inline">
+          <input type="checkbox" ng-true-value="-1" ng-false-value="1" ng-model="form.channel.month_deposit"> 不限
+        </label>
+        </div>
+      </div>
+
+      <div class="form-group required">
+        <label for="deposit_leverage" class="col-sm-2 control-label">月保证金杠杆倍数</label>
+        <div class="col-sm-10">
+          <input
+            type="text"
+            name="deposit_leverage"
+            class="form-control"
+            ng-model="form.channel.deposit_leverage"
+            id="deposit_leverage"
+            ng-pattern="/^[0-9]+(.[0-9]{1,2})?$/"
+            required
+            >
+          <ng-messages
+            class="text-danger"
+            for="(!ChannelForm.deposit_leverage.$pristine || ChannelForm.$submitted) && ChannelForm.deposit_leverage.$error">
+              <ng-message when="required">此处不能为空</ng-message>
+              <ng-message when="pattern">杠杆倍数必须大于0（最多支持输入小数点后两位）</ng-message>
+          </ng-messages>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="contact" class="col-sm-2 control-label">联系人</label>
+        <div class="col-sm-10">
+          <input
+            name="contact"
+            type="text"
+            class="form-control"
+            ng-model="form.channel.contact"
+            ng-maxlength="100"
+            id="contact">
+          <ng-messages
+            class="text-danger"
+            for="(!ChannelForm.contact.$pristine || ChannelForm.$submitted) && ChannelForm.contact.$error">
+              <ng-message when="maxlength">最多支持100个字</ng-message>
+          </ng-messages>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="contact_phone" class="col-sm-2 control-label">联系人电话</label>
+        <div class="col-sm-10">
+          <input
+            name="contact_phone"
+            type="text"
+            class="form-control"
+            ng-model="form.channel.contact_phone"
+            ng-maxlength="100"
+            id="contact_phone">
+          <ng-messages
+            class="text-danger"
+            for="(!ChannelForm.contact_phone.$pristine || ChannelForm.$submitted) && ChannelForm.contact_phone.$error">
+              <ng-message when="maxlength">最多支持100个字</ng-message>
+          </ng-messages>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="contact_email" class="col-sm-2 control-label">联系人邮箱</label>
+        <div class="col-sm-10">
+          <input
+            name="contact_email"
+            type="email"
+            class="form-control"
+            ng-model="form.channel.contact_email"
+            ng-maxlength="100"
+            ng-pattern="/^[0-9a-zA-Z_][-_\.0-9a-zA-Z-]{0,31}@([0-9a-zA-Z][0-9a-zA-Z-]*\.)+[a-zA-Z]{2,4}$/"
+            id="contact_email"
+            >
+            <ng-messages
+            class="text-danger"
+            for="(!ChannelForm.contact_email.$pristine || ChannelForm.$submitted) && ChannelForm.contact_email.$error">
+              <ng-message when="maxlength">最多支持100个字</ng-message>
+              <ng-message when="pattern">邮箱格式错误</ng-message>
+          </ng-messages>
+        </div>
+      </div>
+
+      <div class="col-md-offset-2">
+        <button type="submit" class="btn btn-info" ng-disabled="!ChannelForm.$valid || ChannelForm.$pristine">保存</button>
+        <button type="button" class="btn btn-info" ng-click="form.turnBack()">取消</button>
+      </div>
+    </form>
+  </div>
+</div>

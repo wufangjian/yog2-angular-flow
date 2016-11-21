@@ -1,0 +1,18 @@
+<ng-form name="switchForm" style="padding: 5px;">
+	<label class="radio-inline">
+		<input
+				type="radio"
+				name="status{{row.entity.place_id}}"
+				ng-click="grid.appScope.units.setStatus(row.entity, 1)"
+                ng-model="row.entity.status"
+				value="1"> 开启
+	</label>
+	<label class="radio-inline">
+		<input
+				type="radio"
+				name="status{{row.entity.place_id}}"
+				ng-click="grid.appScope.units.setStatus(row.entity, 2)"
+                ng-model="row.entity.status"
+				value="2">关
+	</label>
+</ng-form>

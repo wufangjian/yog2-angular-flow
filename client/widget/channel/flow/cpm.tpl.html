@@ -1,0 +1,31 @@
+<ng-form novalidate name="cpmForm">
+    <div 
+        class="input-group" 
+        style="margin: 5px;"  
+        ng-if="row.entity.status == 1 && grid.appScope.form.flow.purchase_mode == 2">
+      	<input
+                ng-disabled="grid.appScope.form.flow.purchase_mode == 1"
+                class="form-control"
+                ng-model="row.entity.cpm_price"
+                ng-pattern="/^[0-9][0-9]?(\.[0-9]{1,2})?$|^100$/"
+                ng-blur="grid.appScope.units.setCpm(row.entity, row.entity.cpm_price, row.entity.fix_cpm_low_price)"
+                name="cpmNumber"
+                ui-validate="{
+                    lowPrice: 'grid.appScope.validate.lowPrice(row.entity, $value)'
+                }"
+                required
+                style="padding: 3px;">
+      	<div class="input-group-addon">元</div>
+    </div>
+    <div ng-if="row.entity.status == 1 && grid.appScope.form.flow.purchase_mode == 1"  class="input-group"  style="margin: 5px;"  >
+       <input class="form-control" value="{{row.entity.cpm_price}}" disabled style="padding: 3px;">
+       <div class="input-group-addon">元</div>
+    </div>
+    <div style="font-size:10px;margin: 5px;">
+        <ng-messages class="text-danger" for="cpmForm.cpmNumber.$error">
+            <ng-message when="lowPrice">必须大于底价{{row.entity.fix_cpm_low_price}}</ng-message>
+            <ng-message when="required">此处不能为空</ng-message>
+            <ng-message when="pattern">大于0小于等于100保留两位小数</ng-message>
+        </ng-messages>
+    </div>
+  </ng-form>

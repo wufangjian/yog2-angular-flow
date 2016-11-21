@@ -1,0 +1,48 @@
+<div class="modal-header bg-info">
+    <button type="button" class="close" ng-click="close()" class="pull-right">&times;</button>
+    <h4 class="modal-title">
+        <span class="fa fa-info-circle"></span>
+        目录配置
+    </h4>
+</div>
+<div class="modal-body">
+    <h5>广告位名称：<span ng-bind="initData.place_name"></span></h5>
+    <form novalidate
+          style="padding: 15px;"
+          class="form form-horizontal form-validate"
+          ng-submit="AllDirForm.$valid && form.submit()"
+          name="AllDirForm"
+          ng-autodisable>
+        <div class="form-group required">
+            <dualmultiselect
+                    ng-if="initData.tiebaDirList.length > 0"
+                    ng-model="selected.selectedDir"
+                    input-model="initData.tiebaDirList"
+                    recursion-check="true"
+                    required
+                    options="{
+                    displayProperty: 'dirName',
+                    valueProperty: 'dirId',
+                    iconLeaf: 'fa fa-file'
+                }">
+            </dualmultiselect>
+            <input
+                    type="hidden"
+                    name="alldirname"
+                    ui-validate-watch="'selected.selectedDir.length'"
+                    ng-model="selected.selectedDir">
+            <ng-messages class="text-danger"
+                         for="(!AllDirForm.alldirname.$pristine || AllDirForm.$submitted) && AllDirForm.alldirname.$error">
+            </ng-messages>
+        </div>
+        <div class="form-group required">
+            <div class="" style="text-align: center;">
+                <button type="submit" class="btn btn-info">确认</button>
+                <button type="button" class="btn btn-default" ng-click="close()">取消</button>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- <div class="modal-footer text-right">
+    <button class="btn btn-default" ng-click="close()">关闭</button>
+</div> -->

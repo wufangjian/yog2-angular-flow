@@ -1,0 +1,19 @@
+#FIS CI官网：http://solar.baidu.com/ci
+#gitlab 开发流程文档：http://agroup.baidu.com/dev/md/article/17002
+#请注意yml语法，空格需对其，冒号后面建议统一添加空格。您可以在线验证文件:http://codebeautify.org/yaml-validator
+
+#代码同步配置
+scm_svn_url: https://svn.baidu.com/dianquan/trunk/node/ssp     #同步svn目标地址
+hi_group_id: 1503236 #开发群，方便接收消息，多个逗号隔开
+
+#自动提测部署配置
+#详细介绍http://solar.baidu.com/ci/platform/#/tasks/agile-deploy
+#build:
+#    steps:
+#        - agile-deploy:
+#            default: #部署默认配置
+#                remote: 'fis@cq01-fe-build.epc.baidu.com' #沙盒机器
+#                deploy:
+#                    - {from: '/', to: '/home/fis/test/ci'}
+#            test01:  #指定特殊配置，覆盖默认
+#                remote: 'fis@cp01-fe-build02.epc.baidu.com' #沙盒机器
