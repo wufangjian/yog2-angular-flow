@@ -1,0 +1,177 @@
+<style type="text/css">
+    .uib-datepicker-popup.dropdown-menu li div{outline: none;}
+</style>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        百度贴吧-添加吧广告屏蔽
+    </div>
+    <div class="panel-body">
+    <form name="BaForm"
+          ng-submit="vm.submit() && BaForm.$valid"
+          class="form-validate form-horizontal"
+          ng-autodisable
+          novalidate
+          >
+      <div class="form-group required">
+        <label for="forumName" class="col-sm-2 control-label">吧名：</label>
+        <div class="col-sm-8">
+          <input
+              name="forumName"
+              type="text"
+              class="form-control"
+              ng-model="vm.data.forumName"
+              ui-validate="{
+                nameError: 'vm.checkName($value)'
+              }"
+              required>
+          <ng-messages
+            class="text-danger"
+            for="(!BaForm.forumName.$pristine || BaForm.$submitted) && BaForm.forumName.$error">
+              <ng-message when="required">此处不能为空</ng-message>
+              <ng-message when="nameError">最多支持100个吧</ng-message>
+          </ng-messages>
+        </div>
+      </div>
+
+      <div class="form-group required">
+        <label for="shieldStartTime" class="col-sm-2 control-label">开始时间：</label>
+        <div class="col-sm-8">
+            <a class="dropdown-toggle" id="shieldStartTime" role="button" data-toggle="dropdown" data-target="#" href="#">
+              <div class="input-group date">
+                <input 
+                  type="text"
+                  name="shieldStartTime"
+                  class="form-control"
+                  data-ng-model="vm.data.shieldStartTime"
+                  data-date-time-input="YYYY-MM-DD HH:mm:ss"
+                  required
+                >
+                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+              </div>
+            </a>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" style="left: 10px !important;">
+                <datetimepicker 
+                  data-ng-model="vm.data.shieldStartTime"
+                  data-before-render="startDateBeforeRender($dates)"
+                  data-on-set-time="startDateOnSetTime()"
+                  data-datetimepicker-config="{dropdownSelector: '#shieldStartTime', renderOn: 'end-date-changed'}"
+                  >
+                </datetimepicker>
+            </ul>
+            <ng-messages
+                  class="text-danger"
+                  for="(!BaForm.shieldStartTime.$pristine || BaForm.$submitted) && BaForm.shieldStartTime.$error">
+                <ng-message when="required">此处不能为空</ng-message>
+            </ng-messages>
+        </div>
+      </div>
+
+      <div class="form-group required">
+          <label for="shieldStartTime" class="col-sm-2 control-label">结束时间：</label>
+          <div class="col-sm-8" ng-if="vm.extra.time !== -1">
+            <a class="dropdown-toggle" id="shieldEndTime" role="button" data-toggle="dropdown" data-target="#" href="#">
+              <div class="input-group date">
+                <input 
+                  type="text"
+                  name="shieldEndTime"
+                  class="form-control"
+                  data-date-time-input="YYYY-MM-DD HH:mm:ss"
+                  data-ng-model="vm.data.shieldEndTime"
+                  required
+                >
+                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+              </div>
+            </a>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" style="left: 10px !important;">
+                <datetimepicker 
+                  data-ng-model="vm.data.shieldEndTime"
+                  data-on-set-time="endDateOnSetTime()"
+                  data-before-render="endDateBeforeRender($view, $dates, $leftDate, $upDate, $rightDate)"
+                  data-datetimepicker-config="{ dropdownSelector: '#shieldEndTime', renderOn: 'start-date-changed' }"
+                  >
+                </datetimepicker>
+            </ul>
+            <ng-messages
+                  class="text-danger"
+                  for="(!BaForm.shieldEndTime.$pristine || BaForm.$submitted) && BaForm.shieldEndTime.$error">
+                <ng-message when="required">此处不能为空</ng-message>
+            </ng-messages>
+        </div>
+        <div class="col-sm-2">
+          <label class="checkbox-inline">
+            <input type="checkbox" ng-true-value="-1" ng-false-value="1" ng-model="vm.extra.time"> 不限
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group required">
+        <label for="pageList" class="col-sm-2 control-label">页面：</label>
+        <div class="col-sm-10">
+          <label class="checkbox-inline" ng-repeat="obj in vm.pageList track by $index">
+              <input type="checkbox" checklist-value="obj.type" checklist-model="vm.extra.pageArr">
+              {{obj.text}}
+          </label>
+
+          <input type="hidden" name="page" ng-model="vm.extra.page" required>
+          <ng-messages class="text-danger"
+            for="(!BaForm.page.$pristine || BaForm.$submitted) && BaForm.page.$error">
+              <ng-message when="required">此处不能为空</ng-message>
+          </ng-messages>
+        </div>
+      </div>
+
+      <div class="form-group required">
+        <label for="clientList" class="col-sm-2 control-label">端：</label>
+        <div class="col-sm-10">
+          <label class="checkbox-inline" ng-repeat="obj in vm.clientList track by $index">
+              <input type="checkbox" checklist-value="obj.type" checklist-model="vm.extra.clientArr">
+              {{obj.text}}
+          </label>
+
+          <input type="hidden" name="client" ng-model="vm.extra.client" required>
+          <ng-messages class="text-danger"
+            for="(!BaForm.client.$pristine || BaForm.$submitted) && BaForm.client.$error">
+              <ng-message when="required">此处不能为空</ng-message>
+          </ng-messages>
+        </div>
+      </div>
+
+      <div class="form-group required">
+        <label for="reason" class="col-sm-2 control-label">原因：</label>
+        <div class="col-sm-5">
+          <ui-select ng-model="vm.extra.reason" required>
+              <ui-select-match>
+                  <span ng-bind="$select.selected.text"></span>
+              </ui-select-match>
+              <ui-select-choices repeat="item.type as item in vm.reasonList | filter: $select.search">
+                  <span ng-bind="item.text"></span>
+              </ui-select-choices>
+          </ui-select>
+        </div>
+      </div>
+
+      <div class="form-group required" ng-if="vm.extra.reason == 0">
+        <label for="reason" class="col-sm-2 control-label"></label>
+        <div class="col-sm-5">
+          <input
+              placeholder="自定义原因"
+              name="vm.extra.otherreason"
+              type="text"
+              class="form-control"
+              ng-model="vm.extra.otherreason"
+              required>
+          <ng-messages
+            class="text-danger"
+            for="(!BaForm.otherreason.$pristine || BaForm.$submitted) && BaForm.otherreason.$error">
+              <ng-message when="required">此处不能为空</ng-message>
+          </ng-messages>
+        </div>
+      </div>
+
+      <div class="col-md-offset-2 mt20">
+        <button type="submit" class="btn btn-info" ng-disabled="BaForm.$invalid || BaForm.$pristine">保存</button>
+        <button type="button" class="btn btn-info" ui-sref="media.ba">取消</button>
+      </div>
+    </form>
+    </div>
+</div>

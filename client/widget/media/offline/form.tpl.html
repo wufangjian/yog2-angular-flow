@@ -1,0 +1,88 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    下线广告创意
+  </div>
+
+  <div class="panel-body">
+    <form name="OfflineForm"
+          ng-submit="OfflineForm.$valid && vm.submit()"
+          class="form-validate form-horizontal"
+          ng-autodisable
+          novalidate
+          >
+      <div class="form-group">
+        <label for="channelId" class="col-sm-2 control-label">说明：</label>
+        <div class="col-sm-10" style="background: #eee;padding: 10px;border-radius: 10px;">
+              <p>1、贴吧（客户端8.0及以上版本支持）用法:</p>
+              <p>&nbsp;&nbsp;1）长按广告头像，等待振动后会自动把广告数据拷贝到系统剪贴板（数据已加密）;</p>
+              <p>&nbsp;&nbsp;2）通过Hi或者微信等工具传播（粘贴即可）。</p>
+              <p>2、浏览器（暂不支持）</p>
+              <p>3、手百（暂不支持）</p>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="channelId" class="col-sm-2 control-label">广告来源</label>
+        <div class="col-sm-10">
+          <ui-select
+            name="channelId"
+            id="channelId"
+            ng-model="vm.data.channelId"
+            ui-validate="vm.data.channelId"
+            required>
+            <ui-select-match placeholder="渠道名称">{{$select.selected.cname}}</ui-select-match>
+            <ui-select-choices repeat="obj.cid as obj in vm.channelList | filter: $select.search">
+                <div ng-bind-html="obj.cname | highlight: $select.search"></div>
+            </ui-select-choices>
+          </ui-select>
+
+          <ng-messages
+            class="text-danger"
+            for="(!ChannelForm.channelId.$pristine || ChannelForm.$submitted) && ChannelForm.channelId.$error">
+              <ng-message when="required">请选择广告来源</ng-message>
+          </ng-messages>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="ideaKeyWord" class="col-sm-2 control-label">各渠道定制化字段</label>
+        <div class="col-sm-10">
+          <input
+            name="ideaKeyWord"
+            type="text"
+            class="form-control"
+            ng-model="vm.data.ideaKeyWord"
+            ng-maxlength="100"
+            required>
+          <ng-messages
+            class="text-danger"
+            for="(!OfflineForm.ideaKeyWord.$pristine || OfflineForm.$submitted) && OfflineForm.ideaKeyWord.$error">
+              <ng-message when="required">请输入参数值</ng-message>
+          </ng-messages>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="productIds" class="col-sm-2 control-label">生效产品线</label>
+        <div class="col-sm-10">
+          <label class="checkbox-inline" ng-repeat="obj in vm.productList track by $index">
+              <input type="checkbox" checklist-value="obj.type" checklist-model="vm.extra.productArr">
+              {{obj.text}}
+          </label>
+
+          <input type="hidden" name="productIds" ng-model="vm.data.productIds" required>
+          <ng-messages class="text-danger"
+            for="(!BaForm.productIds.$pristine || BaForm.$submitted) && BaForm.productIds.$error">
+              <ng-message when="required">请选择生效产品线</ng-message>
+          </ng-messages>
+        </div>
+      </div>
+
+      <div class="col-md-offset-2">
+        <button type="submit" class="btn btn-info" ng-disabled="!OfflineForm.$valid || OfflineForm.$pristine">保存</button>
+        <button type="button" class="btn btn-info" ng-click="vm.turnBack()">取消</button>
+      </div>
+    </form>
+    <table-model data="{{vm.channelList}}"></table-model>
+  </div>
+</div>

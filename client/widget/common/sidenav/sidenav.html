@@ -4,25 +4,29 @@
             ui-sref-active="active"
             ng-repeat="(parKey, item) in sideNavConfig"
             ng-class="{'has-submenu': item.subNav.length, 'active': item.selected}"
-            ng-click="parNav(parKey)" par-nav>
+            ng-click="parNav(parKey);$event.preventdefault();$event.stopPropagation();"
+            par-nav>
             <a
                 ui-sref="{{item.url}}"
                 ng-if="item.url"
                 ui-sref-opts="{reload: true}">
                 <i class="{{item.className}}"></i> <span class="nav-label">{{item.name}}</span>
             </a>
-            <a
-                ng-if="!item.url"
-                ui-sref-opts="{reload: true}">
+            <a ng-if="!item.url">
                 <i class="{{item.className}}"></i> <span class="nav-label">{{item.name}}</span>
             </a>
             <ul
                 ng-if="item.subNav.length"
                 class="list-unstyled">
-                <li ng-repeat="subUrlItem in item.subNav">
+                <li
+                    ng-repeat="(index, obj) in item.subNav"
+                    ng-click="subNav(parKey, index);$event.stopPropagation();$event.preventdefault();"
+                    ng-class="{'active': obj.selected}"
+                    sub-nav
+                    >
                     <a
                         ui-sref-opts="{reload: true}"
-                        ui-sref="{{subUrlItem.url}}">{{subUrlItem.name}}</a>
+                        ui-sref="{{obj.url}}">{{obj.name}}</a>
                 </li>
             </ul>
         </li>

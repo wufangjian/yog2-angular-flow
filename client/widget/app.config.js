@@ -1,15 +1,15 @@
 /**
+ * @file APP-SSP
  * @author wufangjian
  */
+
 (function (window, angular) {
     'use strict';
-
     var appConfig = {
         name: 'ssp',
-        collapsed: false,
-       	op: "wufangjian_test"
+        collapsed: false
     };
 
     angular.module('sspApp')
-    	.constant('appConfig', appConfig);
+        .constant('appConfig', appConfig);
 })(window, window.angular);

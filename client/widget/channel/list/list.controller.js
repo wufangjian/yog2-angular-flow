@@ -12,26 +12,31 @@
         .module('sspApp')
         .controller('ChannelListContr', channelListControl);
 
-    channelListControl.$inject = ['$scope', '$stateParams', '$state', '$location', '$modal', 'ChannelConstant', 'ChannelService', 'channelList', 'toastr'];
+    channelListControl.$inject = ['$scope', '$stateParams', '$state', '$location', '$modal', 'ChannelConstant', 'ChannelService', 'toastr', 'Units'];
 
-    function channelListControl($scope, $stateParams, $state, $location, $modal, ChannelConstant, ChannelService, channelList, toastr) {
-
-        // 初始化数据
-        $scope.initData = {
-            statusList: ChannelConstant.statusList,
-            channelList: channelList
-        };
-
+    function channelListControl($scope, $stateParams, $state, $location, $modal, ChannelConstant, ChannelService, toastr, Units) {
+        var vm = this;
+        var channelList = [];
         var pagination = {
             rp: $stateParams.rp || 20,
             page: $stateParams.page || 1
         };
+        var query = {
+            status: $stateParams.status || 0,
+            cname: $stateParams.cname || ""
+        }
 
-		// 表单
-        $scope.form = {
+        vm.statusList = ChannelConstant.statusList;
+        vm.changeStatus = changeStatus;
+
+        getChannelList();
+        // ========================================
+
+        // 表单
+        vm.form = {
             params: {
-                status: $stateParams.status || 0,
-                cname: $stateParams.cname || null
+                status: query.status,
+                cname: query.cname
             },
             extra: {
                 len: 0
@@ -39,85 +44,69 @@
             getData: function () {
                 return angular.extend({}, this.params);
             },
+            reset: function () {
+                this.params.status = 0;
+                this.params.cname = null;
+                this.submit();
+            },
             submit: function () {
                 var params = angular.extend({}, pagination, this.getData());
                 return ChannelService.getChannelList(params).then(function (response) {
-                    $scope.initData.channelList = response.data;
-                    $scope.gridOptions.data = response.data;
+                    vm.gridApi.selection.clearSelectedRows();
+                    channelList = response.data;
+                    vm.gridOptions.data = response.data;
                     $location.search(params);
-
-                    $scope.gridApi.selection.clearSelectedRows();
+                    vm.ngstyle = Units.getTableStyle(vm.gridOptions);
                 });
             }
         };
+        
 
-        $scope.units = {
-            adapter: function (data) {
+        function getChannelList () {
+            return ChannelService.getChannelList(query).then(function(response) {
+                channelList = response.data;
+                vm.gridOptions.data = channelList;
+                vm.ngstyle = Units.getTableStyle(vm.gridOptions);
+            });
+        }
+        
+        function changeStatus(status) {
+            var msg = (parseInt(status, 10) === 1) ? '已启用' : '已冻结';
+            var ret = [];
+            var selectRows = vm.gridApi.selection.getSelectedRows();
 
-            },
-            watchStatus: function (status) {
-                var flag = false;
-
-                if ($stateParams.status === status) {
-                    flag = true;
-                }
-                return flag;
-            },
-            // 启动
-            changeStatus: function (status) {
-                var msg = (parseInt(status, 10) === 1) ? '已启用' : '已冻结';
-                var result = [];
-                var selectRows = $scope.gridApi.selection.getSelectedRows();
-
-                for (var i = 0; i < selectRows.length; i++) {
-                    var cid = selectRows[i] ? selectRows[i].cid : '';
-                    result.push({cid: cid, status: status});
-                }
-
-                if (!result || result.length <= 0) {
-                    return false;
-                }
-
-                var params = {
-                    data: result
-                };
-
-                return ChannelService.changeChannelStatus(params).then(function (response) {
-                    if (response.data && response.data.flag) {
-                        toastr.info(msg, '成功');
-                        $scope.form.submit();
-                    }
+            for (var i = 0; i < selectRows.length; i++) {
+                var cid = selectRows[i] ? selectRows[i].cid : '';
+                ret.push({
+                    cid: cid,
+                    status: status
                 });
-            },
-
-            // 流量路由
-            operaRoute: function (entity, type) {
-                var cid = entity.cid;
-
-                // 编辑
-                if (parseInt(type, 10) === 1) {
-                    $state.go('channel.edit', {cid: cid});
-                }
-                // 流量控制
-                else if (parseInt(type, 10) === 2) {
-                    $state.go('channel.flow', {cid: cid});
-                }
-            },
-            getTableStyle: function () {
-                var length = $scope.gridOptions.data.length;
-                return {
-                    height: (length * $scope.gridOptions.rowHeight + $scope.gridOptions.headerRowHeight) + 70 + 'px'
-                };
             }
-        };
+
+            if (!ret || ret.length <= 0) {
+                return false;
+            }
+
+            var params = {
+                data: ret
+            };
+
+            return ChannelService.changeChannelStatus(params).then(function(response) {
+                if (response.data && response.data.flag) {
+                    toastr.info(msg, '成功');
+                    vm.form.submit();
+                } else {
+                    toastr.info(msg, '失败');
+                }
+            });
+        }
 
 		// ======================================================
 		// 组件
 		// ======================================================
 		// 分页信息
-
-        $scope.gridOptions = {
-            data: $scope.initData.channelList,
+        vm.gridOptions = {
+            data: channelList,
             enableSorting: false,
             enableGridMenu: true,
             headerRowHeight: 36,
@@ -140,11 +129,11 @@
                 {field: 'cid', name: '操作', cellTemplate: __uri('./opera.tpl.html'), minWidth: 150}
             ],
             onRegisterApi: function (gridApi) {
-                $scope.gridApi = gridApi;
+                vm.gridApi = gridApi;
                 gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
                     pagination.page = newPage;
                     pagination.rp = pageSize;
-                    $scope.form.submit();
+                    vm.form.submit();
                 });
             }
         };

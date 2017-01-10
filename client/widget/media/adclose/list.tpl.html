@@ -1,0 +1,40 @@
+ <div class="panel panel-default">
+  <div class="panel-heading">
+  	<form class="form-inline" role="form">
+	  <div class="form-group">
+      	<div class="uiselect-200">
+      		<ui-select ng-model="vm.data.productId" ng-change="vm.submit()">
+			    <ui-select-match placeholder="请选择产品线">{{$select.selected.text}}</ui-select-match>
+			    <ui-select-choices repeat="obj.type as obj in vm.productList | filter: $select.search">
+			        <div ng-bind-html="obj.text | highlight: $select.search"></div>
+			    </ui-select-choices>
+			</ui-select>
+      	</div>
+	  </div>
+	  <div class="form-group">
+	    <div class="input-group">
+	      <div class="input-group-addon">渠道名称</div>
+	      <input class="form-control" ng-model="vm.data.channelName" type="text" placeholder="渠道名称">
+	    </div>
+	  </div>
+	  <button type="submit" class="btn btn-info" ng-click="vm.submit()">查询</button>
+    <button class="btn btn-info" ng-click="vm.reset()">重置</button>
+	</form>
+  </div>
+
+  <!-- Table -->
+  <table class="table">
+  	 <div
+        ng-if="vm.gridOptions.data.length >= 0"
+        ng-style="vm.ngstyle"
+        ui-grid="vm.gridOptions"
+  		  ui-grid-resize-columns
+        ui-grid-auto-resize
+        ui-grid-selection
+        ui-grid-pagination
+        ui-grid-save-state
+        ui-grid-empty-base-layer
+  		  class="table-uigrid mt20">
+        </div>
+  </table>
+</div>

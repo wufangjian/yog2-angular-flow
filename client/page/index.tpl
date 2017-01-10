@@ -9,7 +9,7 @@
     {% require "ssp:static/styles/animate.css" %}
     {% require "ssp:static/styles/app.css" %}
     {% require "ssp:static/styles/bootstrap.reset.css" %}
-    
+    {% require "ssp:static/dep/angular-bootstrap-datetimepicker/datetimepicker.css" %}
     <base href="/ssp/">
 {% endhead %}
 {% body %}
@@ -28,18 +28,18 @@
 
     <section class="content">
         {% widget "home:widget/navigation/navbar.tpl" %}
-        <div class="container-fluid pt15">
-            <div class="label label-info"><i class="fa fa-map-marker"></i><ul class="breadcrumb" ncy-breadcrumb></ul></div>
-            
+        <div class="container-fluid pt15 mt50">
+            <div class="label label-info">
+                <i class="fa fa-map-marker"></i>
+                <ul class="breadcrumb" ncy-breadcrumb></ul>
+            </div>
         </div>
         <div class="wraper container-fluid" ui-view="main"></div>
         <app-footer name="appConfig.name"></app-footer>
     </section>
-    {% require "ssp:static/dep/moment/moment.min.js" %}
+    {% require "ssp:static/dep/moment/moment.js" %}
     {% require "ssp:static/dep/angular/angular.min.js" %}
     {% require "ssp:static/dep/jquery/dist/jquery.min.js" %}
-    {% require "ssp:static/dep/bootstrap-daterangepicker/daterangepicker.js" %}
-    {% require "ssp:static/dep/angular-daterangepicker/angular-daterangepicker.min.js" %}
     {% require "ssp:static/dep/angular-animate/angular-animate.min.js" %}
     {% require "ssp:static/dep/tb/tb.js" %}
     {% require "ssp:static/dep/underscore/underscore-min.js" %}
@@ -56,7 +56,7 @@
     {% require "ssp:static/dep/angular-strap/dist/angular-strap.tpl.min.js" %}
     {% require "ssp:static/dep/angular-i18n/angular-locale_zh-cn.js" %}
     {% require "ssp:static/dep/sweetalert/dist/sweetalert.min.js" %}
-    {% require "ssp:static/dep/ngSweetAlert/SweetAlert.min.js" %}
+    {% require "ssp:static/dep/ngSweetAlert/SweetAlert.js" %}
     {% require "ssp:static/dep/angular-loading-bar/loading-bar.min.js" %}
     {% require "ssp:static/dep/angular-busy/dist/angular-busy.min.js" %}
     {% require "ssp:static/dep/ui-select/dist/select.min.js" %}
@@ -71,6 +71,12 @@
     {% require "ssp:static/dep/angular-messages/angular-messages.js" %}
     {% require "ssp:static/dep/angular-toastr/angular-toastr.js" %}
     {% require "ssp:static/dep/angular-toastr/angular-toastr.tpls.js" %}
+    
+    {% require "ssp:static/dep/angular-bootstrap-datetimepicker/datetimeinput.js" %}
+    {% require "ssp:static/dep/angular-bootstrap-datetimepicker/bootstrap.js" %}
+    {% require "ssp:static/dep/angular-bootstrap-datetimepicker/moment-with-locales.js" %}
+    {% require "ssp:static/dep/angular-bootstrap-datetimepicker/datetimepicker.js" %}
+    {% require "ssp:static/dep/angular-bootstrap-datetimepicker/datetimepicker.templates.js" %}
 
     {% script %}
         require('../widget/app')

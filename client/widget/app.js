@@ -7,6 +7,7 @@
 
     function initGdApp($rootScope, $state, $stateParams, appConfig, i18nService) {
         i18nService.setCurrentLang('zh-cn');
+        moment.locale('zh-cn');
 
         $rootScope.toggleNav = function () {
             $rootScope.appConfig.collapsed = !$rootScope.appConfig.collapsed;
@@ -55,14 +56,23 @@
         'ui.validate',
         'angular-loading-bar', // 加载loading
         'ngAnimate',
-        'toastr'
-    ]).run(initGdApp).config(function (cfpLoadingBarProvider, treeViewConfigProvider) {
+        'toastr',
+        'ui.bootstrap.datetimepicker',
+        'ui.dateTimeInput',
+        'oitozero.ngSweetAlert'
+    ]).run(initGdApp).config(function (cfpLoadingBarProvider, treeViewConfigProvider, uibDatepickerPopupConfig) {
         cfpLoadingBarProvider.includeSpinner = true;
         angular.extend(treeViewConfigProvider.options, {
             iconLeaf: 'fa fa-file',
             iconExpand: 'fa fa-minus',
             iconCollapse: 'fa fa-plus'
         });
+
+        // 时间选择器设置
+        uibDatepickerPopupConfig.currentText = '今天';
+        uibDatepickerPopupConfig.clearText = '清除';
+        uibDatepickerPopupConfig.closeText = '关闭';
+        uibDatepickerPopupConfig.showButtonBar = true;
     });
 
 
@@ -75,6 +85,8 @@
     require('./common/sidenav/sidenav.service.js');
     require('./common/footer/footer.js');
     require('./common/kit/stringtonumber.js');
+    require('./common/kit/units.js');
+    require('./common/directive/table/table.directive.js');
 
 
     // channel List
@@ -88,6 +100,20 @@
     require('./channel/flow/flow.controller.js');
     require('./channel/winpop/winpop.controller.js');
     require('./channel/winpop/batchsetprice.controller.js');
+
+    // media List
+    require('./media/media.constant.js');
+    require('./media/media.service.js');
+
+    require('./media/offline/offline.controller.js');
+
+    require('./media/ba/ba.controller.js');
+    require('./media/ba/ba.add.controller.js');
+
+    require('./media/catalog/catalog.controller.js');
+
+    require('./media/adclose/list.controller.js');
+
 
     // Filters List
 

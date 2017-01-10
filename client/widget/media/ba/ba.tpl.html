@@ -1,0 +1,38 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        百度贴吧-吧屏蔽列表
+    </div>
+    <form class="form-inline mt20" role="form">
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-addon">吧名</div>
+          <input class="form-control" ng-model="vm.data.forumName" type="text" placeholder="">
+        </div>
+      </div>
+        <button type="submit" class="btn btn-info" ng-click="vm.getGridData()">搜索</button>
+        <button class="btn btn-info" ng-click="vm.reset()">重置</button>
+    </form>
+
+    <div class="panel-body">
+        <button type="button" class="btn btn-success glyphicon glyphicon-plus" ui-sref="media.ba.add">增加吧广告屏蔽</button>
+        <button type="button" class="btn btn-warning glyphicon glyphicon-minus" ng-disabled="!vm.gridApi.selection.getSelectedRows().length" ng-click="vm.operate.remove()">解除吧广告屏蔽</button>
+        <button type="button" 
+            class="btn btn-info glyphicon glyphicon-th-list" 
+            ng-click="vm.operate.download()"
+            ng-disabled="vm.gridOptions.data.length <= 0">下载列表</button>
+    </div>
+    <table class="table">
+     <div
+        ng-if="vm.gridOptions.data.length > 0"
+        ui-grid="vm.gridOptions"
+        ng-style="vm.ngstyle"
+        ui-grid-resize-columns
+        ui-grid-auto-resize
+        ui-grid-selection
+        ui-grid-pagination
+        ui-grid-save-state
+        ui-grid-empty-base-layer
+        class="table-uigrid mt20">
+        </div>
+  </table>
+</div>

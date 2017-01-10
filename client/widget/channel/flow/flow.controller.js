@@ -16,14 +16,15 @@
     channelFlowControl.$inject = ['$scope', '$stateParams', '$state', '$location', '$uibModal', '$q', 'ChannelConstant', 'ChannelService', 'placeChannelInfo', 'toastr'];
 
     function channelFlowControl($scope, $stateParams, $state, $location, $uibModal, $q, ChannelConstant, ChannelService, placeChannelInfo, toastr) {
+
         // 初始化数据
         $scope.initData = {
             channelTypeList: ChannelConstant.channelTypeList,
             purchaseModeList: ChannelConstant.purchaseModeList,
             place_data: placeChannelInfo.place_data,
             platformsALL: placeChannelInfo.platforms, // 平台
-            productsAll: placeChannelInfo.products, // 产品线
-            productsSelect: placeChannelInfo.fe.selectProductList
+            productsAll: placeChannelInfo.products || [], // 产品线
+            productsSelect: placeChannelInfo.fe.selectProductList || []
         };
 
         // ======================================================
@@ -34,14 +35,11 @@
             enableGridMenu: true,
             headerRowHeight: 36,
             rowHeight: 85,
-            showFooter: false,
             enableHorizontalScrollbar: 1,
-            enableVerticalScrollbar: 1,
-            enableColumnResizing: true,
-            selectionRowHeaderWidth: 0,
+            enableVerticalScrollbar: 0,
+            enableSelectAll: true,
             showGridFooter: true,
             minRowsToShow: (!$scope.initData.place_data || $scope.initData.place_data.length === 0) ? 1 : ($scope.initData.place_data.length),
-
             // -------- 分页属性 ----------------
             useExternalPagination: false,
             enablePagination: false, // 是否分页，默认为true

@@ -1,0 +1,36 @@
+    <table class="table table-bordered table-hover mt20 border">
+      <thead>
+        <tr>
+          <th><input type="checkbox"></th>
+          <th>渠道名</th>
+          <th>渠道id</th>
+          <th>渠道类型</th>
+          <th>状态</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="item in data track by $index">
+          <td><input type="checkbox"></td>
+          <td>{{item.cname}}</td>
+          <td>{{item.cid}}</td>
+          <td>{{item.fe_ctype}}</td>
+          <td>{{item.fe_status}}</td>
+        </tr>
+      </tbody>
+      <style>
+        .panel>.panel-body+.table,
+        .panel>.panel-body+.table-responsive,
+        .panel>.table+.panel-body,
+        .panel>.table-responsive+.panel-body {
+          border: 1px solid #ddd;
+        }
+
+        .table thead>tr>th,
+        .table tbody>tr>th,
+        .table tfoot>tr>th,
+        .table thead>tr>td,
+        .table tbody>tr>td,
+        .table tfoot>tr>td
+        {padding: 5px;}
+    </style>
+  </table>

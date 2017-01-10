@@ -1,0 +1,91 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+     <span>百度贴吧-目录屏蔽</span>
+  </div>
+
+  <div class="panel-body">
+    <!--CatalogForm-->
+    <form name="CatalogForm"
+          ng-if="catalog.init.flag"
+          ng-submit="catalog.submit()"
+          class="form-validate form-horizontal"
+          ng-autodisable
+          novalidate
+          >
+
+      <!-- PC -->
+      <div class="form-group">
+        <label for="cname" class="col-sm-2 control-label">PC:</label>
+        <div class="col-sm-8">
+            <dualmultiselect
+                    ng-if="catalog.init.dirPC.length > 0"
+                    ng-model="catalog.selectedPC"
+                    input-model="catalog.init.dirPC"
+                    recursion-check="true"
+                    options="{
+                      displayProperty: 'dirName',
+                      valueProperty: 'dirId',
+                      iconLeaf: 'fa fa-file'
+                  }">
+            </dualmultiselect>
+            <input
+              type="hidden"
+              name="pc"
+              ui-validate-watch="'catalog.selectedPC.length'"
+              ng-model="catalog.selectedPC">
+        </div>
+      </div>
+
+      <!-- WAP -->
+      <div class="form-group">
+        <label for="cname" class="col-sm-2 control-label">WAP:</label>
+        <div class="col-sm-8">
+            <dualmultiselect
+                    ng-if="catalog.init.dirWAP.length > 0"
+                    ng-model="catalog.selectedWAP"
+                    input-model="catalog.init.dirWAP"
+                    recursion-check="true"
+                    options="{
+                    displayProperty: 'dirName',
+                    valueProperty: 'dirId',
+                    iconLeaf: 'fa fa-file'
+                }">
+            </dualmultiselect>
+            <input
+              type="hidden"
+              name="wap"
+              ui-validate-watch="'catalog.selectedWAP.length'"
+              ng-model="catalog.selectedWAP">
+        </div>
+      </div>
+
+      <!-- APP -->
+      <div class="form-group">
+        <label for="cname" class="col-sm-2 control-label">APP:</label>
+        <div class="col-sm-8">
+            <dualmultiselect
+                    ng-if="catalog.init.dirAPP.length > 0"
+                    ng-model="catalog.selectedAPP"
+                    input-model="catalog.init.dirAPP"
+                    recursion-check="true"
+                    options="{
+                    displayProperty: 'dirName',
+                    valueProperty: 'dirId',
+                    iconLeaf: 'fa fa-file'
+                }">
+            </dualmultiselect>
+            <input
+              type="hidden"
+              name="app"
+              ui-validate-watch="'catalog.selectedAPP.length'"
+              ng-model="catalog.selectedAPP">
+        </div>
+      </div>
+
+      <div class="col-md-offset-2">
+        <button type="submit" class="btn btn-info">确认屏蔽</button>
+        <!-- <button type="button" class="btn btn-info" ui-sref="media.catalog">取消</button> -->
+      </div>
+    </form>
+  </div>
+</div>

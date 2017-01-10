@@ -46,7 +46,9 @@ header {
 .pt15 {
     padding-top: 15px;
 }
-
+.mt50 {
+    margin-top: 50px;
+}
 
 .text-overflow {
     width: 100%;
@@ -807,28 +809,37 @@ aside.left-panel.collapsed {
   position: absolute;
   bottom: 0px;
 }
-    
-    
+
 /***** 8.LOGO *****/
+
 .logo {
-  padding: 11px 0;
-  text-align: center;
-  background-color: #ffffff;
+    padding: 13px 0;
+    text-align: center;
+    background-color: #fff;
 }
 
 .logo-expanded {
-  font-size: 20px;
-  letter-spacing: .05em;
-  color: #fff !important;
-  font-weight: 700;
-  text-transform: uppercase;
+    font-size: 20px;
+    letter-spacing: .05em;
+    color: #fff!important;
+    font-weight: 700;
+    text-transform: uppercase;
 }
+
 .logo-expanded i {
-  font-size: 28px;
-  vertical-align: middle;
-  color: #2f353f;
-  display: block;
+    font-size: 24px;
+    vertical-align: middle;
+    color: #2f353f;
+    display: block;
+    height: 24px;
 }
+
+.logo-expanded i.fa.fa-paw::after {
+    content: "AOP";
+    font: 700 21px Arial;
+    margin-left: 2px;
+}
+
 
 /******** 9.Navigation *******/
 
@@ -1055,6 +1066,29 @@ aside:not(.collapsed) .navigation ul li.active ul {
 .uiselect-200, .uiselect-200 .form-control{width: 200px !important; vertical-align: middle; display: inline-block;}
 .ml20{margin-left: 20px;}
 .mt20{margin-top: 20px;}
+
+.ui-grid-canvas {
+    padding-top: 0 !important;
+}
+.ui-grid-canvas {
+    border-bottom: 1px solid #eee !important;
+    height: 100% !important;
+}
+
+.ui-grid-viewport {
+    height: 100% !important;
+}
+.ui-grid-footer-info {
+    padding-left: 10px !important;
+}
+.ui-grid-menu-mid {
+    background: #eee !important;
+}
+.glyphicon:before {
+    padding: 5px !important;
+    vertical-align: middle;
+}
+
 /*.panel .panel-body p{color:red;}*/
 .validation-invalid{color:red;}
 
